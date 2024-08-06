@@ -1,19 +1,30 @@
 import { Stream, Writer } from "@rdfc/js-runner";
 import { getLoggerFor } from "./utils/logUtil";
+import Queue from "queue-fifo";
 
-const logger = getLoggerFor("log");
+const logger = getLoggerFor("buffer");
 
 /**
- * The logging function is a very simple processor which simply logs the
- * incoming stream to the console and pipes it directly into the outgoing
- * stream.
+ * The buffer function is a very simple processor which simply buffers the
+ * incoming stream and forwards it to the outgoing stream at every interval.
+ * The amount of members to send through at each interval can be configured.
  *
- * @param incoming The data stream which must be logged.
- * @param outgoing The data stream into which the incoming stream is written.
+ * @param incoming The data stream with the incoming data.
+ * @param outgoing The data stream to which the buffered data should be forwarded.
+ * @param interval The interval at which the data should be forwarded, in
+ * milliseconds. The default is 1000 ms.
+ * @param amount The amount of members to forward at each interval. If set to 0,
+ * all currently buffered members will be forwarded. The default is 0.
+ * @param minAmount The minimum amount of members to forward at each interval.
+ * If the buffer contains less than this amount, the buffer will wait for the
+ * next interval before forwarding the data. The default is 1.
  */
-export function log(
+export function buffer(
     incoming: Stream<string>,
     outgoing: Writer<string>,
+    interval: number = 1000,
+    amount: number = 0,
+    minAmount: number = 1,
 ): () => Promise<void> {
     /**************************************************************************
      * This is where you set up your processor. This includes reading         *
@@ -25,11 +36,10 @@ export function log(
      * any data into the pipeline here.                                       *
      **************************************************************************/
 
+    const queue = new Queue<string>();
+
     incoming.on("data", (data) => {
-        outgoing
-            .push(data) // Push data into outgoing stream.
-            .then(() => console.log(data)) // Only print if successful.
-            .finally(); // Ignore any errors.
+        queue.enqueue(data);
     });
 
     // If a processor upstream terminates the channel, we propagate this change
@@ -53,6 +63,23 @@ export function log(
      * Note that this entirely optional, and you may return void instead.     *
      **************************************************************************/
     return async () => {
-        // await outgoing.push("You're being logged. Do not resist.");
+        setInterval(() => {
+            if (queue.size() >= minAmount) {
+                let i = 0;
+                while (i < amount || (amount === 0 && !queue.isEmpty())) {
+                    const data = queue.dequeue();
+                    if (data === null) {
+                        break;
+                    }
+                    outgoing.push(data);
+                    i += 1;
+                }
+                logger.debug(`Forwarded ${i} members from the buffer.`);
+            } else {
+                logger.debug(
+                    `Buffer contains ${queue.size()} members, but the minimum amount is ${minAmount}. Waiting for the next interval.`,
+                );
+            }
+        }, interval);
     };
 }

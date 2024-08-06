@@ -5,9 +5,9 @@
 @prefix : <https://w3id.org/conn#>.
 @prefix sh: <http://www.w3.org/ns/shacl#>.
 
-js:Log a js:JsProcess;
+js:Buffer a js:JsProcess;
     js:file <./lib/index.js>;
-    js:function "log";
+    js:function "buffer";
     js:location <./>;
     js:mapping [
         a fno:Mapping;
@@ -19,11 +19,23 @@ js:Log a js:JsProcess;
             a fnom:PositionParameterMapping;
             fnom:functionParameter "outgoing";
             fnom:implementationParameterPosition "1"^^xsd:int;
+        ], [
+            a fnom:PositionParameterMapping;
+            fnom:functionParameter "interval";
+            fnom:implementationParameterPosition "2"^^xsd:int;
+        ], [
+            a fnom:PositionParameterMapping;
+            fnom:functionParameter "amount";
+            fnom:implementationParameterPosition "3"^^xsd:int;
+        ], [
+            a fnom:PositionParameterMapping;
+            fnom:functionParameter "minAmount";
+            fnom:implementationParameterPosition "4"^^xsd:int;
         ];
     ].
 
 [ ] a sh:NodeShape;
-    sh:targetClass js:Log;
+    sh:targetClass js:Buffer;
     sh:property [
         sh:class :ReaderChannel;
         sh:path js:incoming;
@@ -36,4 +48,22 @@ js:Log a js:JsProcess;
         sh:name "outgoing";
         sh:maxCount 1;
         sh:minCount 1;
+    ], [
+        sh:datatype xsd:int;
+        sh:path js:interval;
+        sh:name "interval";
+        sh:minCount 0;
+        sh:maxCount 1;
+    ], [
+        sh:datatype xsd:int;
+        sh:path js:amount;
+        sh:name "amount";
+        sh:minCount 0;
+        sh:maxCount 1;
+    ], [
+        sh:datatype xsd:int;
+        sh:path js:minAmount;
+        sh:name "minAmount";
+        sh:minCount 0;
+        sh:maxCount 1;
     ].

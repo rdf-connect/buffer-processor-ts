@@ -19,14 +19,17 @@ const pipeline = `
         <incoming> a js:JsReaderChannel.
         <outgoing> a js:JsWriterChannel.
 
-        [ ] a js:Log;
+        [ ] a js:Buffer;
             js:incoming <incoming>;
-            js:outgoing <outgoing>.
+            js:outgoing <outgoing>;
+            js:interval 2000;
+            js:amount 2;
+            js:minAmount 2.
     `;
 
 describe("processor", () => {
     test("definition", async () => {
-        expect.assertions(5);
+        expect.assertions(8);
 
         const source: Source = {
             value: pipeline,
@@ -41,16 +44,19 @@ describe("processor", () => {
             shapes: config,
         } = await extractProcessors(source);
 
-        // Extract the Log processor.
-        const env = processors.find((x) => x.ty.value.endsWith("Log"))!;
+        // Extract the Buffer processor.
+        const env = processors.find((x) => x.ty.value.endsWith("Buffer"))!;
         expect(env).toBeDefined();
 
         const args = extractSteps(env, quads, config);
         expect(args.length).toBe(1);
-        expect(args[0].length).toBe(2);
+        expect(args[0].length).toBe(5);
 
-        const [[incoming, outgoing]] = args;
+        const [[incoming, outgoing, interval, amount, minAmount]] = args;
         expect(incoming.ty.id).toBe("https://w3id.org/conn/js#JsReaderChannel");
         expect(outgoing.ty.id).toBe("https://w3id.org/conn/js#JsWriterChannel");
+        expect(parseInt(interval.value)).toBe(2000);
+        expect(parseInt(amount.value)).toBe(2);
+        expect(parseInt(minAmount.value)).toBe(2);
     });
 });
