@@ -55,8 +55,8 @@ describe("processor", () => {
         const [[incoming, outgoing, interval, amount, minAmount]] = args;
         expect(incoming.ty.id).toBe("https://w3id.org/conn/js#JsReaderChannel");
         expect(outgoing.ty.id).toBe("https://w3id.org/conn/js#JsWriterChannel");
-        expect(parseInt(interval.value)).toBe(2000);
-        expect(parseInt(amount.value)).toBe(2);
-        expect(parseInt(minAmount.value)).toBe(2);
+        expect(parseInt(interval)).toBe(2000);
+        expect(parseInt(amount)).toBe(2);
+        expect(parseInt(minAmount)).toBe(2);
     });
 });

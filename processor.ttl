@@ -49,19 +49,19 @@ js:Buffer a js:JsProcess;
         sh:maxCount 1;
         sh:minCount 1;
     ], [
-        sh:datatype xsd:int;
+        sh:datatype xsd:integer;
         sh:path js:interval;
         sh:name "interval";
         sh:minCount 0;
         sh:maxCount 1;
     ], [
-        sh:datatype xsd:int;
+        sh:datatype xsd:integer;
         sh:path js:amount;
         sh:name "amount";
         sh:minCount 0;
         sh:maxCount 1;
     ], [
-        sh:datatype xsd:int;
+        sh:datatype xsd:integer;
         sh:path js:minAmount;
         sh:name "minAmount";
         sh:minCount 0;
