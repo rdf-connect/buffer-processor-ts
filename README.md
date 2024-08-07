@@ -2,25 +2,34 @@
 
 [![Build and tests with Node.js](https://github.com/rdf-connect/buffer-processor-ts/actions/workflows/build-test.yml/badge.svg)](https://github.com/rdf-connect/buffer-processor-ts/actions/workflows/build-test.yml)
 
-This repository contains a fully functioning dummy implementation of a logging processor written in TypeScript, meant to be used as a template in order to kickstart the development of your next processor.
+This repository contains a processor to buffer data for the RDF Connect framework.
+At a certain interval, the processor will pipe through a given amount of data from the incoming stream to the outgoing
+stream.
 
-## Features
+## Configuration
 
-At the time of writing, this repositories sets up the following boilerplate and tools for you.
+The processor can be configured using the following parameters:
 
-- Placeholder implementation of a processor which accepts input from a stream, logs it to the console, and pipes it back into the outgoing stream.
-- An initial `processor.ttl` file.
-- Vitest configuration unit testing, including GitHub Actions configuration.
-- Renovate notifications for dependency updates.
-- Convenient publishing to GitHub Packages for every new release.
-- ESLint/Prettier linting and styling, including a Husky git hook in combination with lint-staged.
-- The MIT license.
+* `incoming`: The incoming stream to buffer.
+* `outgoing`: The outgoing stream to pipe the buffered data to.
+* `interval`: The interval at which the processor should pipe through data from the incoming stream. The default value
+  is `1000` milliseconds.
+* `amount`: The amount of data that should be piped through from the incoming stream at each interval. Use `0` to pipe
+  through all available data. The default value is `0`.
+* `minAmount`: The minimum amount of data that should be piped through from the incoming stream at each interval. The
+  default value is `1`.
 
 ## Installation
 
 ```
 npm install
 npm run build
+```
+
+Or install from NPM:
+
+```
+npm install @rdfc/buffer-processor-ts
 ```
 
 ## Example
