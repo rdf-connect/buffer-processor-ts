@@ -63,7 +63,7 @@ export function buffer(
      * Note that this entirely optional, and you may return void instead.     *
      **************************************************************************/
     return async () => {
-        setInterval(() => {
+        setInterval(async () => {
             if (queue.size() >= minAmount) {
                 let i = 0;
                 while (i < amount || (amount === 0 && !queue.isEmpty())) {
@@ -71,7 +71,7 @@ export function buffer(
                     if (data === null) {
                         break;
                     }
-                    outgoing.push(data);
+                    await outgoing.push(data);
                     i += 1;
                 }
                 logger.debug(`Forwarded ${i} members from the buffer.`);
