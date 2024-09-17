@@ -44,7 +44,11 @@ export function buffer(
 
     // If a processor upstream terminates the channel, we propagate this change
     // onto the processors downstream.
-    incoming.on("end", () => {
+    let queueCleared: ((value: void) => void) | null = null;
+    incoming.on("end", async () => {
+        await new Promise((resolve) => {
+            queueCleared = resolve;
+        });
         outgoing
             .end()
             .then(() => logger.info("Incoming stream terminated."))
@@ -64,7 +68,7 @@ export function buffer(
      **************************************************************************/
     return async () => {
         setInterval(async () => {
-            if (queue.size() >= minAmount) {
+            if (queue.size() >= minAmount || queueCleared !== null) {
                 let i = 0;
                 while (i < amount || (amount === 0 && !queue.isEmpty())) {
                     const data = queue.dequeue();
@@ -75,6 +79,10 @@ export function buffer(
                     i += 1;
                 }
                 logger.debug(`Forwarded ${i} members from the buffer.`);
+
+                if (queueCleared !== null && queue.isEmpty()) {
+                    queueCleared();
+                }
             } else {
                 logger.debug(
                     `Buffer contains ${queue.size()} members, but the minimum amount is ${minAmount}. Waiting for the next interval.`,
