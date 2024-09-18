@@ -46,12 +46,13 @@ export function buffer(
     // onto the processors downstream.
     let queueCleared: ((value: void) => void) | null = null;
     incoming.on("end", async () => {
+        logger.info("Incoming stream terminated.");
         await new Promise((resolve) => {
             queueCleared = resolve;
         });
         outgoing
             .end()
-            .then(() => logger.info("Incoming stream terminated."))
+            .then(() => logger.info("Outgoing stream terminated."))
             .finally();
     });
 
@@ -66,21 +67,45 @@ export function buffer(
      *                                                                        *
      * Note that this entirely optional, and you may return void instead.     *
      **************************************************************************/
+    let busy = false;
+    const toPush = new Queue<string>();
     return async () => {
-        setInterval(async () => {
+        const id = setInterval(async () => {
             if (queue.size() >= minAmount || queueCleared !== null) {
                 let i = 0;
-                while (i < amount || (amount === 0 && !queue.isEmpty())) {
+                while (
+                    (i < amount && queueCleared === null) ||
+                    (amount === 0 && !queue.isEmpty()) ||
+                    (queueCleared !== null && !queue.isEmpty() && i < amount)
+                ) {
                     const data = queue.dequeue();
-                    if (data === null) {
-                        break;
+                    if (data !== null) {
+                        toPush.enqueue(data);
+                        i++;
                     }
-                    await outgoing.push(data);
-                    i += 1;
                 }
-                logger.debug(`Forwarded ${i} members from the buffer.`);
+                logger.debug(`Forwarding ${i} members from the buffer.`);
 
                 if (queueCleared !== null && queue.isEmpty()) {
+                    clearInterval(id);
+                }
+
+                if (!busy) {
+                    busy = true;
+                    while (!toPush.isEmpty()) {
+                        const pushing = toPush.dequeue();
+                        if (pushing !== null) {
+                            await outgoing.push(pushing);
+                        }
+                    }
+                    busy = false;
+                }
+
+                if (
+                    queueCleared !== null &&
+                    queue.isEmpty() &&
+                    toPush.isEmpty()
+                ) {
                     queueCleared();
                 }
             } else {
