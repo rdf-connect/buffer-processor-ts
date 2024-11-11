@@ -42,6 +42,6 @@
   },
   "dependencies": {
     "queue-fifo": "^0.2.6",
-    "winston": "^3.16.0"
+    "winston": "^3.17.0"
   }
 }
