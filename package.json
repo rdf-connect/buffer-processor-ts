@@ -31,7 +31,7 @@
     "eslint-config-prettier": "^10.1.1",
     "husky": "^9.1.7",
     "ldes-client": "^0.1.6",
-    "lint-staged": "^15.4.3",
+    "lint-staged": "^15.5.0",
     "prettier": "^3.5.3",
     "rdf-js": "^4.0.2",
     "ts-node": "^10.9.2",
