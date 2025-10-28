@@ -2,8 +2,6 @@
 
 [![Build and tests with Node.js](https://github.com/rdf-connect/buffer-processor-ts/actions/workflows/build-test.yml/badge.svg)](https://github.com/rdf-connect/buffer-processor-ts/actions/workflows/build-test.yml)
 
-## This repository is largely redundant as RDF-Connect now supports backpressure.
-
 This repository contains a processor to buffer data for the RDF Connect framework.
 At a certain interval, the processor will pipe through a given amount of data from the incoming stream to the outgoing
 stream.
