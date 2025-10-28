@@ -1,41 +1,61 @@
-import { buffer } from "../src";
-import { SimpleStream } from "@rdfc/js-runner";
+import { FullProc } from "@rdfc/js-runner";
+import { Buffer } from "../src";
+import { channel, createRunner } from "@rdfc/js-runner/lib/testUtils";
 import { describe, expect, test } from "vitest";
+import { createLogger } from "winston";
 
 describe("log", () => {
     test("successful", async () => {
         expect.assertions(8);
 
-        const incoming = new SimpleStream<string>();
-        const outgoing = new SimpleStream<string>();
+        const runner = createRunner();
+        const [incoming, incomingReader] = channel(runner, "incoming");
+        const [outgoingWriter, outgoingReader] = channel(runner, "outgoing");
 
         const output: [string, number][] = [];
-        const promise = new Promise<void>((resolve) => {
-            outgoing.on("data", (data) => {
-                output.push([data, Date.now()]);
-
+        let resolve: (v: void) => void = () => {};
+        const promise = new Promise((res) => (resolve = res));
+        (async () => {
+            for await (const st of outgoingReader.strings()) {
+                console.log("Got string ", st);
+                output.push([st, Date.now()]);
                 if (output.length === 4) {
                     resolve();
                 }
-            });
-        });
+            }
+        })();
 
         // Log when data has arrived and check if the difference in timestamps is as expected.
 
         // Initialize the processor.
-        const startLogging = buffer(incoming, outgoing, 1000, 2, 2);
-        await startLogging();
+        const startLogging = <FullProc<Buffer>>new Buffer(
+            {
+                incoming: incomingReader,
+                outgoing: outgoingWriter,
+                interval: 1000,
+                minAmount: 2,
+                amount: 2,
+            },
+            createLogger(),
+        );
+        await startLogging.init();
+
+        const outputPromise = Promise.all([
+            startLogging.transform(),
+            startLogging.produce(),
+        ]);
 
         // Push all messages into the pipeline.
-        await incoming.push("Hello, World!");
-        await incoming.push("This is a second message");
-        await incoming.push("I wish you a good day.");
-        await incoming.push("Goodbye.");
+        await incoming.string("Hello, World!");
+        await incoming.string("This is a second message");
+        await incoming.string("I wish you a good day.");
+        await incoming.string("Goodbye.");
 
-        await incoming.end();
+        await incoming.close();
 
         // Wait for the processor to finish.
         await promise;
+        await outputPromise;
 
         // Check if the messages arrived in the correct order and according to the interval.
         expect(output.length).toBe(4);
