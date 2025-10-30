@@ -1,39 +1,33 @@
+@prefix rdfc: <https://w3id.org/rdf-connect#>.
 @prefix js: <https://w3id.org/conn/js#>.
 @prefix : <https://w3id.org/conn#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 
-<> owl:imports <../node_modules/@rdfc/js-runner/ontology.ttl>.
-<> owl:imports <../node_modules/@rdfc/file-utils-processors-ts/processors.ttl>.
-<> owl:imports <../node_modules/ldes-client/processor.ttl>.
-<> owl:imports <../node_modules/@rdfc/log-processor-ts/processor.ttl>.
+<> owl:imports <./node_modules/@rdfc/file-utils-processors-ts/processors.ttl>.
+<> owl:imports <./node_modules/@rdfc/log-processor-ts/processor.ttl>.
+<> owl:imports <./node_modules/@rdfc/js-runner/index.ttl>.
+<> owl:imports <./node_modules/ldes-client/processor.ttl>.
 <> owl:imports <../processor.ttl>.
+<> a rdfc:Pipeline;
+  rdfc:consistsOf [
+    rdfc:instantiates rdfc:NodeRunner;
+    rdfc:processor <client>, <buffer>, <logger>;
+  ].
 
-<input/writer> a js:JsWriterChannel.
-<input/reader> a js:JsReaderChannel.
-[ ] a js:JsChannel;
-    :reader <input/reader>;
-    :writer <input/writer>.
+<client> a rdfc:LdesClient;
+  rdfc:output <input>;
+  rdfc:url <https://telraam-api.net/ldes/observations/by-page>;
+  rdfc:fetch [ js:safe true ].
 
-<output/writer> a js:JsWriterChannel.
-<output/reader> a js:JsReaderChannel.
-[ ] a js:JsChannel;
-    :reader <output/reader>;
-    :writer <output/writer>.
+<buffer> a rdfc:Buffer;
+  rdfc:incoming <input>;
+  rdfc:outgoing <output>;
+  rdfc:interval 5000;
+  rdfc:amount 100;
+  rdfc:minAmount 100.
 
-[ ] a js:LdesClient;
-    js:output <input/writer>;
-    js:url <https://telraam-api.net/ldes/observations/by-page>;
-    js:fetch [
-         js:safe true;
-    ].
+<logger> a rdfc:LogProcessorJs;
+  rdfc:reader <output>;
+  rdfc:level "info";
+  rdfc:label "default".
 
-
-[ ] a js:Buffer;
-    js:incoming <input/reader>;
-    js:outgoing <output/writer>;
-    js:interval 5000;
-    js:amount 100;
-    js:minAmount 100.
-
-[ ] a js:Log;
-    js:incoming <output/reader>.

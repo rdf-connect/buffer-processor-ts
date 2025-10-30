@@ -6,6 +6,7 @@ This repository contains a processor to buffer data for the RDF Connect framewor
 At a certain interval, the processor will pipe through a given amount of data from the incoming stream to the outgoing
 stream.
 
+
 ## Configuration
 
 The processor can be configured using the following parameters:
@@ -39,11 +40,13 @@ An example configuration of the processor can be found in the `example` director
 You can run this example by executing the following command:
 
 ```bash
-npx js-runner example/pipeline.ttl
+cd example
+npm i
+npx rdfc pipeline.ttl
 ```
 
 To enable all debug logs, add `DEBUG=*` before the command:
 
 ```bash
-DEBUG=* npx js-runner example/pipeline.ttl
+DEBUG=rdfc npx rdfc pipeline.ttl
 ```

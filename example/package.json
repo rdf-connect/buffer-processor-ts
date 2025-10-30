@@ -1,0 +1,20 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx rdfc pipeline.ttl"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rdfc/buffer-processor-ts": "file:..",
+    "@rdfc/file-utils-processors-ts": "^1.0.1",
+    "@rdfc/js-runner": "^3.0.1",
+    "@rdfc/log-processor-ts": "^2.0.1",
+    "@rdfc/orchestrator-js": "^2.0.0",
+    "ldes-client": "^0.2.4"
+  },
+  "description": ""
+}

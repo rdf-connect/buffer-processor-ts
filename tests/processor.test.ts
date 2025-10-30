@@ -1,66 +1,42 @@
 import { expect, test, describe } from "vitest";
-import { extractProcessors, extractSteps, Source } from "@rdfc/js-runner";
+import { ProcHelper } from "@rdfc/js-runner/lib/testUtils";
+import { Buffer } from "../";
+import { resolve } from "path";
+import { Args } from "../src";
 
 const pipeline = `
-        @prefix js: <https://w3id.org/conn/js#>.
-        @prefix ws: <https://w3id.org/conn/ws#>.
-        @prefix : <https://w3id.org/conn#>.
-        @prefix owl: <http://www.w3.org/2002/07/owl#>.
-        @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
-        @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
-        @prefix sh: <http://www.w3.org/ns/shacl#>.
-
-        <> owl:imports <./node_modules/@rdfc/js-runner/ontology.ttl>, <./processor.ttl>.
-
-        [ ] a :Channel;
-            :reader <incoming>.
-        [ ] a :Channel;
-            :writer <outgoing>.
-        <incoming> a js:JsReaderChannel.
-        <outgoing> a js:JsWriterChannel.
-
-        [ ] a js:Buffer;
-            js:incoming <incoming>;
-            js:outgoing <outgoing>;
-            js:interval 2000;
-            js:amount 2;
-            js:minAmount 2.
+        @prefix rdfc: <https://w3id.org/rdf-connect#>.
+        <http://example.org/proc> a rdfc:Buffer;
+            rdfc:incoming <incoming>;
+            rdfc:outgoing <outgoing>;
+            rdfc:interval 2000;
+            rdfc:amount 2;
+            rdfc:minAmount 2.
     `;
 
 describe("processor", () => {
     test("definition", async () => {
         expect.assertions(8);
 
-        const source: Source = {
-            value: pipeline,
-            baseIRI: process.cwd() + "/config.ttl",
-            type: "memory",
-        };
+        const helper = new ProcHelper<Buffer>();
 
-        // Parse pipeline into processors.
-        const {
-            processors,
-            quads,
-            shapes: config,
-        } = await extractProcessors(source);
+        await helper.importFile(resolve("./processor.ttl"));
+        await helper.importInline(resolve("./pipeline.ttl"), pipeline);
 
-        // Extract the Buffer processor.
-        const env = processors.find((x) => x.ty.value.endsWith("Buffer"))!;
-        expect(env).toBeDefined();
+        const config = helper.getConfig("Buffer");
 
-        const args = extractSteps(env, quads, config);
-        expect(args.length).toBe(1);
-        expect(args[0].length).toBe(5);
+        expect(config.location).toBeDefined();
+        expect(config.clazz).toBe("Buffer");
+        expect(config.file).toBeDefined();
 
-        const [[incoming, outgoing, interval, amount, minAmount]] = args;
-        expect(incoming.ty.value).toBe(
-            "https://w3id.org/conn/js#JsReaderChannel",
+        const proc = <Buffer & Args>(
+            await helper.getProcessor("http://example.org/proc")
         );
-        expect(outgoing.ty.value).toBe(
-            "https://w3id.org/conn/js#JsWriterChannel",
-        );
-        expect(parseInt(interval)).toBe(2000);
-        expect(parseInt(amount)).toBe(2);
-        expect(parseInt(minAmount)).toBe(2);
+
+        expect(proc.incoming.constructor.name).toBe("ReaderInstance");
+        expect(proc.outgoing.constructor.name).toBe("WriterInstance");
+        expect(proc.interval).toBe(2000);
+        expect(proc.amount).toBe(2);
+        expect(proc.minAmount).toBe(2);
     });
 });
