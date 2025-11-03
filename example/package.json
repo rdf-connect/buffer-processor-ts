@@ -13,7 +13,7 @@
     "@rdfc/file-utils-processors-ts": "^1.0.1",
     "@rdfc/js-runner": "^3.0.1",
     "@rdfc/log-processor-ts": "^2.0.1",
-    "@rdfc/orchestrator-js": "^2.0.0",
+    "@rdfc/orchestrator-js": "^2.0.1",
     "ldes-client": "^0.2.4"
   },
   "description": ""
