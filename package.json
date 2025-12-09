@@ -31,7 +31,7 @@
     "tsc-alias": "^1.8.16",
     "typescript": "^5.9.3",
     "vitest": "^4.0.15",
-    "winston": "^3.18.3"
+    "winston": "^3.19.0"
   },
   "dependencies": {
     "@rdfc/js-runner": "^3.0.1",
