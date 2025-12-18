@@ -22,7 +22,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^8.50.0",
     "@typescript-eslint/parser": "^8.50.0",
-    "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
@@ -30,7 +30,7 @@
     "prettier": "^3.7.4",
     "tsc-alias": "^1.8.16",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.15",
+    "vitest": "^4.0.16",
     "winston": "^3.19.0"
   },
   "dependencies": {
