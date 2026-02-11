@@ -14,7 +14,7 @@
     "@rdfc/js-runner": "^3.0.2",
     "@rdfc/log-processor-ts": "^2.0.3",
     "@rdfc/orchestrator-js": "^2.0.1",
-    "ldes-client": "^0.2.5"
+    "ldes-client": "^0.3.0"
   },
   "description": ""
 }
