@@ -26,7 +26,7 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
+    "lint-staged": "^16.3.0",
     "prettier": "^3.8.1",
     "tsc-alias": "^1.8.16",
     "typescript": "^5.9.3",
@@ -34,7 +34,7 @@
     "winston": "^3.19.0"
   },
   "dependencies": {
-    "@rdfc/js-runner": "^3.0.2",
+    "@rdfc/js-runner": "^3.0.3",
     "queue-fifo": "^0.2.6"
   }
 }
