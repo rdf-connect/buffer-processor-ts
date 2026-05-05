@@ -1,8 +1,5 @@
 import { Processor, Reader, Writer } from "@rdfc/js-runner";
-import { getLoggerFor } from "./utils/logUtil";
 import Queue from "queue-fifo";
-
-const logger = getLoggerFor("buffer");
 
 /**
  * The buffer function is a very simple processor which simply buffers the
@@ -71,7 +68,7 @@ export class Buffer extends Processor<Args> {
                         i++;
                     }
                 }
-                logger.debug(`Forwarding ${i} members from the buffer.`);
+                this.logger.debug(`Forwarding ${i} members from the buffer.`);
 
                 if (this.queueCleared !== null && this.queue.isEmpty()) {
                     clearInterval(id);
