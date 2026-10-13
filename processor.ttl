@@ -28,18 +28,21 @@ rdfc:Buffer a owl:Class, rdfs:Class;
     sh:datatype xsd:integer;
     sh:path rdfc:interval;
     sh:name "interval";
+    sh:defaultValue 1000;
     sh:minCount 0;
     sh:maxCount 1;
   ], [
     sh:datatype xsd:integer;
     sh:path rdfc:amount;
     sh:name "amount";
+    sh:defaultValue 0;
     sh:minCount 0;
     sh:maxCount 1;
   ], [
     sh:datatype xsd:integer;
     sh:path rdfc:minAmount;
     sh:name "minAmount";
+    sh:defaultValue 1;
     sh:minCount 0;
     sh:maxCount 1;
   ].
