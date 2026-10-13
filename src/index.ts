@@ -28,9 +28,7 @@ export class Buffer extends Processor<Args> {
     private readonly queue = new Queue<Uint8Array>();
     private queueCleared: ((value: void) => void) | null = null;
     async init(this: Args & this): Promise<void> {
-        this.interval = this.interval ?? 1000;
-        this.amount = this.amount ?? 0;
-        this.minAmount = this.minAmount ?? 1;
+        // Defaults for interval, amount and minAmount are set in processor.ttl.
     }
     async transform(this: Args & this): Promise<void> {
         for await (const st of this.incoming.buffers()) {

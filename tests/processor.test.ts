@@ -39,4 +39,28 @@ describe("processor", () => {
         expect(proc.amount).toBe(2);
         expect(proc.minAmount).toBe(2);
     });
+
+    test("falls back to its default values", async () => {
+        const helper = new ProcHelper<Buffer>();
+
+        await helper.importFile(resolve("./processor.ttl"));
+        await helper.importInline(
+            resolve("./pipeline.ttl"),
+            `
+        @prefix rdfc: <https://w3id.org/rdf-connect#>.
+        <http://example.org/proc> a rdfc:Buffer;
+            rdfc:incoming <incoming>;
+            rdfc:outgoing <outgoing>.
+    `,
+        );
+        helper.getConfig("Buffer");
+
+        const proc = <Buffer & Args>(
+            await helper.getProcessor("http://example.org/proc")
+        );
+
+        expect(proc.interval).toBe(1000);
+        expect(proc.amount).toBe(0);
+        expect(proc.minAmount).toBe(1);
+    });
 });
