@@ -21,8 +21,8 @@
   rdfc:fetch [ js:safe true ].
 
 <buffer> a rdfcp:Buffer;
-  rdfcp:incoming <input>;
-  rdfcp:outgoing <output>;
+  rdfcp:input <input>;
+  rdfcp:output <output>;
   rdfcp:interval 5000;
   rdfcp:amount 100;
   rdfcp:minAmount 100.

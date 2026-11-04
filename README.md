@@ -11,8 +11,8 @@ stream.
 
 The processor can be configured using the following parameters:
 
-* `rdfcp:incoming`: The incoming stream to buffer.
-* `rdfcp:outgoing`: The outgoing stream to pipe the buffered data to.
+* `rdfcp:input`: The incoming stream to buffer.
+* `rdfcp:output`: The outgoing stream to pipe the buffered data to.
 * `rdfcp:interval`: The interval at which the processor should pipe through data from the incoming stream. The default value
   is `1000` milliseconds.
 * `rdfcp:amount`: The amount of data that should be piped through from the incoming stream at each interval. Use `0` to pipe
