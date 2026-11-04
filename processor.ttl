@@ -15,7 +15,7 @@ rdfcp:Buffer a owl:Class, rdfs:Class;
   sh:targetClass rdfcp:Buffer;
   sh:property [
     sh:class rdfc:Reader;
-    sh:path rdfcp:incoming;
+    sh:path rdfcp:input;
     sh:codeIdentifier "incoming";
     sh:name "Input channel";
     sh:description "Input channel with the data to buffer.";
@@ -23,7 +23,7 @@ rdfcp:Buffer a owl:Class, rdfs:Class;
     sh:minCount 1;
   ], [
     sh:class rdfc:Writer;
-    sh:path rdfcp:outgoing;
+    sh:path rdfcp:output;
     sh:codeIdentifier "outgoing";
     sh:name "Output channel";
     sh:description "Output channel to which the buffered data is forwarded.";
