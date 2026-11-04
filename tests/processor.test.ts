@@ -8,8 +8,8 @@ const pipeline = `
         @prefix rdfc: <https://w3id.org/rdf-connect#>.
         @prefix rdfcp: <https://w3id.org/rdf-connect/processors#>.
         <http://example.org/proc> a rdfcp:Buffer;
-            rdfcp:incoming <incoming>;
-            rdfcp:outgoing <outgoing>;
+            rdfcp:input <incoming>;
+            rdfcp:output <outgoing>;
             rdfcp:interval 2000;
             rdfcp:amount 2;
             rdfcp:minAmount 2.
@@ -51,8 +51,8 @@ describe("processor", () => {
         @prefix rdfc: <https://w3id.org/rdf-connect#>.
         @prefix rdfcp: <https://w3id.org/rdf-connect/processors#>.
         <http://example.org/proc> a rdfcp:Buffer;
-            rdfcp:incoming <incoming>;
-            rdfcp:outgoing <outgoing>.
+            rdfcp:input <incoming>;
+            rdfcp:output <outgoing>.
     `,
         );
         helper.getConfig("Buffer");
