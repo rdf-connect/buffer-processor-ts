@@ -6,12 +6,13 @@ import { Args } from "../src";
 
 const pipeline = `
         @prefix rdfc: <https://w3id.org/rdf-connect#>.
-        <http://example.org/proc> a rdfc:Buffer;
-            rdfc:incoming <incoming>;
-            rdfc:outgoing <outgoing>;
-            rdfc:interval 2000;
-            rdfc:amount 2;
-            rdfc:minAmount 2.
+        @prefix rdfcp: <https://w3id.org/rdf-connect/processors#>.
+        <http://example.org/proc> a rdfcp:Buffer;
+            rdfcp:incoming <incoming>;
+            rdfcp:outgoing <outgoing>;
+            rdfcp:interval 2000;
+            rdfcp:amount 2;
+            rdfcp:minAmount 2.
     `;
 
 describe("processor", () => {
@@ -48,9 +49,10 @@ describe("processor", () => {
             resolve("./pipeline.ttl"),
             `
         @prefix rdfc: <https://w3id.org/rdf-connect#>.
-        <http://example.org/proc> a rdfc:Buffer;
-            rdfc:incoming <incoming>;
-            rdfc:outgoing <outgoing>.
+        @prefix rdfcp: <https://w3id.org/rdf-connect/processors#>.
+        <http://example.org/proc> a rdfcp:Buffer;
+            rdfcp:incoming <incoming>;
+            rdfcp:outgoing <outgoing>.
     `,
         );
         helper.getConfig("Buffer");
