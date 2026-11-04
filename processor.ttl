@@ -1,47 +1,60 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
 @prefix rdfc: <https://w3id.org/rdf-connect#>.
+@prefix rdfcp: <https://w3id.org/rdf-connect/processors#>.
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
 @prefix sh: <http://www.w3.org/ns/shacl#>.
 
-rdfc:Buffer a owl:Class, rdfs:Class;
+rdfcp:Buffer a owl:Class, rdfs:Class;
   rdfc:jsImplementationOf rdfc:Processor;
+  rdfs:label "Buffer Processor";
+  rdfs:comment "A processor that buffers incoming data and forwards a configurable amount of it to the output channel at a fixed interval.";
   rdfc:file <./lib/index.js>;
   rdfc:class "Buffer";
   rdfc:entrypoint <./>.
 
 [ ] a sh:NodeShape;
-  sh:targetClass rdfc:Buffer;
+  sh:targetClass rdfcp:Buffer;
   sh:property [
     sh:class rdfc:Reader;
-    sh:path rdfc:incoming;
-    sh:name "incoming";
+    sh:path rdfcp:input;
+    sh:codeIdentifier "incoming";
+    sh:name "Input channel";
+    sh:description "Input channel with the data to buffer.";
     sh:maxCount 1;
     sh:minCount 1;
   ], [
     sh:class rdfc:Writer;
-    sh:path rdfc:outgoing;
-    sh:name "outgoing";
+    sh:path rdfcp:output;
+    sh:codeIdentifier "outgoing";
+    sh:name "Output channel";
+    sh:description "Output channel to which the buffered data is forwarded.";
     sh:maxCount 1;
     sh:minCount 1;
   ], [
     sh:datatype xsd:integer;
-    sh:path rdfc:interval;
-    sh:name "interval";
+    sh:path rdfcp:interval;
+    sh:codeIdentifier "interval";
+    sh:name "Interval";
+    sh:description "Interval in milliseconds at which buffered data is forwarded; default is 1000.";
     sh:defaultValue 1000;
     sh:minCount 0;
     sh:maxCount 1;
   ], [
     sh:datatype xsd:integer;
-    sh:path rdfc:amount;
-    sh:name "amount";
+    sh:path rdfcp:amount;
+    sh:codeIdentifier "amount";
+    sh:name "Amount per interval";
+    sh:description "Number of buffered messages to forward at each interval, or 0 to forward all of them; default is 0.";
     sh:defaultValue 0;
     sh:minCount 0;
     sh:maxCount 1;
   ], [
     sh:datatype xsd:integer;
-    sh:path rdfc:minAmount;
-    sh:name "minAmount";
+    sh:path rdfcp:minAmount;
+    sh:codeIdentifier "minAmount";
+    sh:name "Minimum amount";
+    sh:description "Minimum number of buffered messages needed to forward data at an interval; otherwise, wait for the next interval. Default is 1.";
     sh:defaultValue 1;
     sh:minCount 0;
     sh:maxCount 1;
