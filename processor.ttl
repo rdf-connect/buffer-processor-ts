@@ -15,33 +15,38 @@ rdfc:Buffer a owl:Class, rdfs:Class;
   sh:property [
     sh:class rdfc:Reader;
     sh:path rdfc:incoming;
-    sh:name "incoming";
+    sh:codeIdentifier "incoming";
+    sh:name "Input channel";
     sh:maxCount 1;
     sh:minCount 1;
   ], [
     sh:class rdfc:Writer;
     sh:path rdfc:outgoing;
-    sh:name "outgoing";
+    sh:codeIdentifier "outgoing";
+    sh:name "Output channel";
     sh:maxCount 1;
     sh:minCount 1;
   ], [
     sh:datatype xsd:integer;
     sh:path rdfc:interval;
-    sh:name "interval";
+    sh:codeIdentifier "interval";
+    sh:name "Interval";
     sh:defaultValue 1000;
     sh:minCount 0;
     sh:maxCount 1;
   ], [
     sh:datatype xsd:integer;
     sh:path rdfc:amount;
-    sh:name "amount";
+    sh:codeIdentifier "amount";
+    sh:name "Amount per interval";
     sh:defaultValue 0;
     sh:minCount 0;
     sh:maxCount 1;
   ], [
     sh:datatype xsd:integer;
     sh:path rdfc:minAmount;
-    sh:name "minAmount";
+    sh:codeIdentifier "minAmount";
+    sh:name "Minimum amount";
     sh:defaultValue 1;
     sh:minCount 0;
     sh:maxCount 1;
