@@ -20,6 +20,7 @@
   "author": "Ieben Smessaert",
   "license": "MIT",
   "devDependencies": {
+    "@rdfc/js-runner": "^3.4.2",
     "@typescript-eslint/eslint-plugin": "^8.72.2",
     "@typescript-eslint/parser": "^8.72.2",
     "@vitest/coverage-v8": "^4.1.12",
@@ -34,7 +35,6 @@
     "winston": "^3.19.0"
   },
   "dependencies": {
-    "@rdfc/js-runner": "^3.4.2",
     "queue-fifo": "^0.2.6"
   }
 }
