@@ -1,4 +1,5 @@
 @prefix rdfc: <https://w3id.org/rdf-connect#>.
+@prefix rdfcp: <https://w3id.org/rdf-connect/processors#>.
 @prefix js: <https://w3id.org/conn/js#>.
 @prefix : <https://w3id.org/conn#>.
 @prefix owl: <http://www.w3.org/2002/07/owl#>.
@@ -19,12 +20,12 @@
   rdfc:url <https://telraam-api.net/ldes/observations/by-page>;
   rdfc:fetch [ js:safe true ].
 
-<buffer> a rdfc:Buffer;
-  rdfc:incoming <input>;
-  rdfc:outgoing <output>;
-  rdfc:interval 5000;
-  rdfc:amount 100;
-  rdfc:minAmount 100.
+<buffer> a rdfcp:Buffer;
+  rdfcp:incoming <input>;
+  rdfcp:outgoing <output>;
+  rdfcp:interval 5000;
+  rdfcp:amount 100;
+  rdfcp:minAmount 100.
 
 <logger> a rdfc:LogProcessorJs;
   rdfc:reader <output>;
