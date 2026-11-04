@@ -7,6 +7,8 @@
 
 rdfcp:Buffer a owl:Class, rdfs:Class;
   rdfc:jsImplementationOf rdfc:Processor;
+  rdfs:label "Buffer Processor";
+  rdfs:comment "A processor that buffers incoming data and forwards a configurable amount of it to the output channel at a fixed interval.";
   rdfc:file <./lib/index.js>;
   rdfc:class "Buffer";
   rdfc:entrypoint <./>.
